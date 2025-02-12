@@ -1,43 +1,75 @@
-# Docker Cleanup Tools
+# Docker Cleanup Guide
 
-This repository provides two tools for cleaning up Docker components:
-1. **HTML Web Interface** – A simple web page with buttons to trigger Docker cleanup commands.
-2. **Jupyter Notebook** – An interactive notebook with buttons for executing cleanup commands.
+This guide provides all possible ways to delete Docker components, including images, containers, volumes, and networks.
 
-## HTML Web Interface
-The `docker_cleanup.html` file includes buttons for:
-- Stopping all containers
-- Removing all containers
-- Removing all images
-- Removing all volumes
-- Removing all networks
-- Performing a full system cleanup
+## 1. Remove All Containers
+To remove all running and stopped containers:
+```sh
+docker rm -f $(docker ps -aq)
+```
 
-### Usage
-1. Serve the HTML file using a simple Python server:
-   ```sh
-   python3 -m http.server 8080
-   ```
-2. Open `http://localhost:8080/docker_cleanup.html` in your browser.
-3. Click the buttons to execute cleanup commands (requires a backend to handle API requests).
+To remove only stopped containers:
+```sh
+docker container prune -f
+```
 
-## Jupyter Notebook
-The `docker_cleanup.ipynb` file provides an interactive way to clean up Docker using Python.
+## 2. Remove All Images
+To delete all Docker images:
+```sh
+docker rmi -f $(docker images -aq)
+```
 
-### Usage
-1. Install Jupyter if not installed:
-   ```sh
-   pip install notebook
-   ```
-2. Open the notebook:
-   ```sh
-   jupyter notebook docker_cleanup.ipynb
-   ```
-3. Click the buttons to run cleanup commands directly from the notebook.
+To remove unused images:
+```sh
+docker image prune -a -f
+```
 
-## Warning
-These commands will **permanently delete all Docker containers, images, volumes, and networks**. Use with caution!
+## 3. Remove All Volumes
+To delete all Docker volumes:
+```sh
+docker volume rm $(docker volume ls -q)
+```
 
-## License
-MIT License
+To remove unused volumes:
+```sh
+docker volume prune -f
+```
 
+## 4. Remove All Networks
+To delete all Docker networks:
+```sh
+docker network rm $(docker network ls -q)
+```
+
+To remove unused networks:
+```sh
+docker network prune -f
+```
+
+## 5. Remove Everything (Containers, Images, Volumes, Networks)
+To completely wipe out all Docker components:
+```sh
+docker system prune -a --volumes -f
+```
+
+## 6. Remove Docker Completely
+To remove Docker entirely from the system:
+```sh
+sudo systemctl stop docker
+sudo apt-get remove --purge -y docker-ce docker-ce-cli containerd.io
+sudo rm -rf /var/lib/docker /etc/docker
+```
+(For non-Debian-based systems, use the appropriate package manager.)
+
+## 7. Additional Cleanup
+To remove dangling build cache:
+```sh
+docker builder prune -a -f
+```
+
+To ensure all processes are stopped:
+```sh
+sudo systemctl stop docker
+```
+
+This guide covers all major cleanup options for Docker. Use these commands with caution as they permanently delete data.
