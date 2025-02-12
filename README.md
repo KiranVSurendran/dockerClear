@@ -72,4 +72,34 @@ To ensure all processes are stopped:
 sudo systemctl stop docker
 ```
 
-This guide covers all major cleanup options for Docker. Use these commands with caution as they permanently delete data.
+## 8. Ubuntu Space Check and Cleanup
+To check disk usage:
+```sh
+df -h
+```
+
+To find the largest files and directories:
+```sh
+sudo du -ah / | sort -rh | head -n 20
+```
+
+To clean up space:
+- Remove unnecessary log files:
+  ```sh
+  sudo journalctl --vacuum-size=100M
+  ```
+- Clean up package cache:
+  ```sh
+  sudo apt-get autoremove -y && sudo apt-get clean
+  ```
+- Remove old kernels:
+  ```sh
+  sudo apt-get autoremove --purge
+  ```
+- Delete large unnecessary files manually:
+  ```sh
+  sudo rm -rf /path/to/large/file
+  ```
+
+This guide covers all major cleanup options for Docker and Ubuntu. Use these commands with caution as they permanently delete data.
+
