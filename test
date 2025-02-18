@@ -1,0 +1,74 @@
+1. Stop and Remove All Containers
+sh
+Copy
+Edit
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+2. Remove All Images
+sh
+Copy
+Edit
+docker rmi $(docker images -q) -f
+3. Remove All Volumes
+sh
+Copy
+Edit
+docker volume rm $(docker volume ls -q)
+4. Remove All Networks (Except bridge, host, none)
+sh
+Copy
+Edit
+docker network rm $(docker network ls -q)
+5. Uninstall Docker
+On Ubuntu/Debian
+sh
+Copy
+Edit
+sudo apt-get remove --purge -y docker-ce docker-ce-cli containerd.io
+sudo rm -rf /var/lib/docker /var/lib/containerd
+On Fedora/CentOS
+sh
+Copy
+Edit
+sudo yum remove -y docker-ce docker-ce-cli containerd.io
+sudo rm -rf /var/lib/docker /var/lib/containerd
+On Arch Linux
+sh
+Copy
+Edit
+sudo pacman -Rns docker
+sudo rm -rf /var/lib/docker /var/lib/containerd
+On macOS
+sh
+Copy
+Edit
+brew uninstall --cask docker
+rm -rf ~/.docker
+Or if using Docker Desktop:
+
+sh
+Copy
+Edit
+open /Applications && rm -rf Docker.app
+On Windows (PowerShell)
+powershell
+Copy
+Edit
+wsl --shutdown
+Get-Process -Name "Docker Desktop" -ErrorAction SilentlyContinue | Stop-Process
+winget uninstall --id Docker.DockerDesktop
+Then manually delete:
+
+makefile
+Copy
+Edit
+C:\ProgramData\Docker
+C:\Users\YourUsername\.docker
+6. Verify Docker is Removed
+sh
+Copy
+Edit
+docker --version
+If it says "command not found," Docker is fully removed.
+
+Let me know if you need help reinstalling or configuring it again! 🚀
